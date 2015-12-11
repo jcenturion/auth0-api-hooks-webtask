@@ -8,11 +8,11 @@ const getCheckpointId = (history) => {
   if (history && history.length > 0) {
     console.log('Trying to get last checkpointId from previous run.');
 
-    for (var i = 0; i < history.length; i++) {
+    for (let i = 0; i < history.length; i++) {
       console.log(`Run: ${history[i].started_at} - ${history[i].type}`);
 
       if (history[i].statusCode === 200 && history[i].body){
-        var result = JSON.parse(history[i].body);
+        let result = JSON.parse(history[i].body);
         if (result && result.checkpointId) {
 
           console.log(`This is the last one we want to continue from: ${result.checkpointId}`);
@@ -24,8 +24,8 @@ const getCheckpointId = (history) => {
 }
 
 module.exports = (ctx, done) => {
-  var required_settings = ['AUTH0_DOMAIN', 'AUTH0_GLOBAL_CLIENT_ID', 'AUTH0_GLOBAL_CLIENT_SECRET', 'WEBHOOK_URL'];
-  var missing_settings = required_settings.filter((setting) => !ctx.data[setting]);
+  let required_settings = ['AUTH0_DOMAIN', 'AUTH0_GLOBAL_CLIENT_ID', 'AUTH0_GLOBAL_CLIENT_SECRET', 'WEBHOOK_URL'];
+  let missing_settings = required_settings.filter((setting) => !ctx.data[setting]);
   if (missing_settings.length) {
     return done({ message: 'Missing settings: ' + missing_settings.join(', ') });
   }
@@ -111,22 +111,22 @@ module.exports = (ctx, done) => {
 
       async.eachLimit(context.logs, concurrent_calls, (log, cb) => {
         request
-        .post(url)
-        .send(log)
-        .set('Content-Type', 'application/json')
-        .end((err, res) => {
-          if (err) {
-            console.log('Error sending request:', err);
-            return cb(err);
-          }
+          .post(url)
+          .send(log)
+          .set('Content-Type', 'application/json')
+          .end((err, res) => {
+            if (err) {
+              console.log('Error sending request:', err);
+              return cb(err);
+            }
 
-          if (!res.ok) {
-            console.log('Unexpected response while sending request:', JSON.stringify(res.body));
-            return cb(new Error('Unexpected response from webhook.'));
-          }
+            if (!res.ok) {
+              console.log('Unexpected response while sending request:', JSON.stringify(res.body));
+              return cb(new Error('Unexpected response from webhook.'));
+            }
 
-          cb();
-        });
+            cb();
+          });
       }, (err) => {
         if (err) {
           return callback(err);
@@ -136,7 +136,7 @@ module.exports = (ctx, done) => {
         return callback(null, context);
       });
     }
-  ], function (err, context) {
+  ], (err, context) => {
     if (err) {
       console.log('Job failed.')
       return done({ error: err }, {
