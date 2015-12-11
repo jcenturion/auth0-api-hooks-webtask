@@ -67,3 +67,9 @@ Note that, if the URL we are sending the events to is offline or is returning an
 To test this you could easily setup an endpoint on `http://requestb.in/` and use that as a Webhook URL. This will allow you to see the Webtask in action:
 
 ![](media/requestbin-example.png)
+
+## Troubleshooting
+
+To troubleshoot you can use the `wt logs` command to see the output of your Webtask in real time:
+
+![](media/webtask-troubleshooting.png)
